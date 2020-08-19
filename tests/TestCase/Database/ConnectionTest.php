@@ -253,7 +253,7 @@ class ConnectionTest extends TestCase
         $sql = 'SELECT 1 + 1';
         $result = $this->connection->prepare($sql);
         $this->assertInstanceOf('Cake\Database\StatementInterface', $result);
-        $this->assertEquals($sql, $result->queryString);
+        $this->assertSame($sql, $result->queryString);
 
         $query = $this->connection->newQuery()->select('1 + 1');
         $result = $this->connection->prepare($query);
@@ -815,15 +815,15 @@ class ConnectionTest extends TestCase
         $this->skipIf(!$this->connection->supportsQuoting());
         $expected = "'2012-01-01'";
         $result = $this->connection->quote(new \DateTime('2012-01-01'), 'date');
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
 
         $expected = "'1'";
         $result = $this->connection->quote(1, 'string');
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
 
         $expected = "'hello'";
         $result = $this->connection->quote('hello', 'string');
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
     }
 
     /**
@@ -843,99 +843,99 @@ class ConnectionTest extends TestCase
 
         $result = $connection->quoteIdentifier('name');
         $expected = '"name"';
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
 
         $result = $connection->quoteIdentifier('Model.*');
         $expected = '"Model".*';
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
 
         $result = $connection->quoteIdentifier('Items.No_ 2');
         $expected = '"Items"."No_ 2"';
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
 
         $result = $connection->quoteIdentifier('Items.No_ 2 thing');
         $expected = '"Items"."No_ 2 thing"';
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
 
         $result = $connection->quoteIdentifier('Items.No_ 2 thing AS thing');
         $expected = '"Items"."No_ 2 thing" AS "thing"';
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
 
         $result = $connection->quoteIdentifier('Items.Item Category Code = :c1');
         $expected = '"Items"."Item Category Code" = :c1';
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
 
         $result = $connection->quoteIdentifier('MTD()');
         $expected = 'MTD()';
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
 
         $result = $connection->quoteIdentifier('(sm)');
         $expected = '(sm)';
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
 
         $result = $connection->quoteIdentifier('name AS x');
         $expected = '"name" AS "x"';
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
 
         $result = $connection->quoteIdentifier('Model.name AS x');
         $expected = '"Model"."name" AS "x"';
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
 
         $result = $connection->quoteIdentifier('Function(Something.foo)');
         $expected = 'Function("Something"."foo")';
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
 
         $result = $connection->quoteIdentifier('Function(SubFunction(Something.foo))');
         $expected = 'Function(SubFunction("Something"."foo"))';
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
 
         $result = $connection->quoteIdentifier('Function(Something.foo) AS x');
         $expected = 'Function("Something"."foo") AS "x"';
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
 
         $result = $connection->quoteIdentifier('name-with-minus');
         $expected = '"name-with-minus"';
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
 
         $result = $connection->quoteIdentifier('my-name');
         $expected = '"my-name"';
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
 
         $result = $connection->quoteIdentifier('Foo-Model.*');
         $expected = '"Foo-Model".*';
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
 
         $result = $connection->quoteIdentifier('Team.P%');
         $expected = '"Team"."P%"';
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
 
         $result = $connection->quoteIdentifier('Team.G/G');
         $expected = '"Team"."G/G"';
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
 
         $result = $connection->quoteIdentifier('Model.name as y');
         $expected = '"Model"."name" AS "y"';
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
 
         $result = $connection->quoteIdentifier('nämé');
         $expected = '"nämé"';
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
 
         $result = $connection->quoteIdentifier('aßa.nämé');
         $expected = '"aßa"."nämé"';
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
 
         $result = $connection->quoteIdentifier('aßa.*');
         $expected = '"aßa".*';
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
 
         $result = $connection->quoteIdentifier('Modeß.nämé as y');
         $expected = '"Modeß"."nämé" AS "y"';
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
 
         $result = $connection->quoteIdentifier('Model.näme Datum as y');
         $expected = '"Model"."näme Datum" AS "y"';
-        $this->assertEquals($expected, $result);
+        $this->assertSame($expected, $result);
     }
 
     /**
@@ -1302,8 +1302,8 @@ class ConnectionTest extends TestCase
         }
 
         $trace = $e->getTrace();
-        $this->assertEquals(__FILE__, $trace[1]['file']);
-        $this->assertEquals($this->rollbackSourceLine, $trace[1]['line']);
+        $this->assertSame(__FILE__, $trace[1]['file']);
+        $this->assertSame($this->rollbackSourceLine, $trace[1]['line']);
     }
 
     /**
@@ -1358,8 +1358,8 @@ class ConnectionTest extends TestCase
         $this->assertFalse($this->connection->inTransaction());
 
         $trace = $e->getTrace();
-        $this->assertEquals(__FILE__, $trace[1]['file']);
-        $this->assertEquals($this->rollbackSourceLine, $trace[1]['line']);
+        $this->assertSame(__FILE__, $trace[1]['file']);
+        $this->assertSame($this->rollbackSourceLine, $trace[1]['line']);
     }
 
     /**
